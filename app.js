@@ -26,13 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// app.get('/users', function (req, res) {
-//   db.query('SELECT * FROM user', function (error, results, fields) {
-//       if (error) throw error;
-//       return res.send({ error: false, data: results, message: 'users list.' });
-//   });
-// });
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
