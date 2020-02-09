@@ -1,7 +1,7 @@
 require('dotenv').config();
-//require('./db');
+var db = require('./db');
 
-var mysql = require('mysql');
+//var mysql = require('mysql');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -24,25 +24,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-//app.use('/users', usersRouter);
+app.use('/users', usersRouter);
 
-// connection configurations
-var dbConn = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DATABASE
-});
-// connect to database
-dbConn.connect();
-
-// Retrieve all users 
-app.get('/users', function (req, res) {
-  dbConn.query('SELECT * FROM user', function (error, results, fields) {
-      if (error) throw error;
-      return res.send({ error: false, data: results, message: 'users list.' });
-  });
-});
+// app.get('/users', function (req, res) {
+//   db.query('SELECT * FROM user', function (error, results, fields) {
+//       if (error) throw error;
+//       return res.send({ error: false, data: results, message: 'users list.' });
+//   });
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
