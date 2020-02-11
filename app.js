@@ -18,6 +18,7 @@ const oktaJwtVerifier = new OktaJwtVerifier({
   // }
 });
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -58,15 +59,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', authenticationRequired, usersRouter);
 
 app.get('/api/messages', authenticationRequired, (req, res) => {
-
-  // if (err) {
-  //   console.log('Error', err);
-  // } else {
-  //   console.log('No error');
-  // }
 
   res.json({
     messages: [
