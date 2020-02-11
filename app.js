@@ -12,10 +12,10 @@ const OktaJwtVerifier = require('@okta/jwt-verifier');
 
 const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: process.env.OKTAJWTURL,
-  clientId: process.env.CLIENT_ID,
-  assertClaims: {
-    aud: 'api://default',
-  }
+  clientId: process.env.CLIENT_ID
+  // assertClaims: {
+  //   aud: 'api://default'
+  // }
 });
 
 var indexRouter = require('./routes/index');
@@ -33,8 +33,9 @@ function authenticationRequired(req, res, next) {
   }
 
   const accessToken = match[1];
+  const expectedAudience = 'api://default';
 
-  return oktaJwtVerifier.verifyAccessToken(accessToken)
+  return oktaJwtVerifier.verifyAccessToken(accessToken, expectedAudience)
     .then((jwt) => {
       req.jwt = jwt;
       next();
